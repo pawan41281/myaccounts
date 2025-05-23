@@ -69,9 +69,13 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerVo save(CustomerVo customerVo) throws UnableToProcessException, ResourceAlreadyExistsException {
-		CustomerEntity customerEntity = customerMapper.convert(customerVo);
-		customerEntity = customerRepository.save(customerEntity);
-		return customerMapper.convert(customerEntity);
+		try {
+			CustomerEntity customerEntity = customerMapper.convert(customerVo);
+			customerEntity = customerRepository.save(customerEntity);
+			return customerMapper.convert(customerEntity);
+		} catch (Exception e) {
+			throw new UnableToProcessException(e.getMessage());
+		}
 	}
 
 	@Override
