@@ -71,7 +71,7 @@ public class UserController {
 	// Find Existing User
 	@GetMapping("/username/")
 	@Operation(summary = "Find Operation", description = "Find existing user by username")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ApiResponseVo<UserVo>> findByUsername(@RequestParam String username)
 			throws ResourceNotFoundException {
 
@@ -88,7 +88,7 @@ public class UserController {
 	// Find Existing User
 	@GetMapping("/email/")
 	@Operation(summary = "Find Operation", description = "Find existing user by email")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ApiResponseVo<UserVo>> findByEmail(@RequestParam String email)
 			throws ResourceNotFoundException {
 
@@ -103,14 +103,35 @@ public class UserController {
 	}
 
 	// List of Existing Users
+//	@GetMapping
+//	@Operation(summary = "List Operation", description = "Find all existing usesr")
+//	@PreAuthorize("hasRole('ADMIN')")
+//	public ResponseEntity<ApiResponseVo<List<UserVo>>> list() throws UnableToProcessException {
+//
+//		List<UserVo> list = null;
+//		try {
+//			list = userService.findAll();
+//			String message = list!=null&&list.size()>0?"Users exist":"Users not exists";
+//			Map<String, String> metadata = new HashMap<>();
+//			metadata.put("recordcount", String.valueOf(list.size()));
+//			return ResponseEntity.ok(ApiResponseWrapper.success(message, list, metadata));
+//		} catch (Exception e) {
+//			return ResponseEntity.ok(ApiResponseWrapper.failure(e.getMessage(), list, null));
+//		}
+//	}
+
+	// Find Existing Users based on multiple parameters
 	@GetMapping
-	@Operation(summary = "List Operation", description = "Find all existing usesr")
-	@PreAuthorize("hasRole('ADMIN') or hasRole('USER')")
-	public ResponseEntity<ApiResponseVo<List<UserVo>>> list() throws UnableToProcessException {
+	@Operation(summary = "Find Operation", description = "Find all existing usesr based on multiple parameters")
+	@PreAuthorize("hasRole('ADMIN')")
+	public ResponseEntity<ApiResponseVo<List<UserVo>>> find(
+			@RequestParam(required = false) String username, 
+			@RequestParam(required = false) String email, 
+			@RequestParam(required = false) String mobile) throws UnableToProcessException {
 
 		List<UserVo> list = null;
 		try {
-			list = userService.findAll();
+			list = userService.findByUsernameorEmailorMobile(username, email, mobile);
 			String message = list!=null&&list.size()>0?"Users exist":"Users not exists";
 			Map<String, String> metadata = new HashMap<>();
 			metadata.put("recordcount", String.valueOf(list.size()));

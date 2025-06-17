@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-
 import org.myaccounts.common.exception.ResourceAlreadyExistsException;
 import org.myaccounts.common.exception.ResourceNotFoundException;
 import org.myaccounts.common.exception.UnableToProcessException;
@@ -18,6 +15,8 @@ import org.myaccounts.userapi.repository.RoleRepository;
 import org.myaccounts.userapi.repository.UserRepository;
 import org.myaccounts.userapi.vo.RoleVo;
 import org.myaccounts.userapi.vo.UserVo;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import lombok.AllArgsConstructor;
 
@@ -167,6 +166,13 @@ public class UserServiceImpl implements UserService {
 			return userMapper.convert(optionalUser.get());
 		else
 			throw new ResourceNotFoundException("Email not exists");
+	}
+
+	@Override
+	public List<UserVo> findByUsernameorEmailorMobile(String username, String email, String mobile) throws ResourceNotFoundException {
+		List<UserEntity> list = userRepository.findByUsernameorEmailorMobile(username, email, mobile);
+		List<UserVo> userVoList = userMapper.convertToUserVoList(list);
+		return userVoList;
 	}
 
 }

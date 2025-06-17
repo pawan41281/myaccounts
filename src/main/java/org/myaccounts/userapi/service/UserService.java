@@ -12,6 +12,8 @@ public interface UserService {
 	public UserVo findByUsername(String userName) throws ResourceNotFoundException;
 
 	public UserVo findByEmail(String email) throws ResourceNotFoundException;
+	
+	public List<UserVo> findByUsernameorEmailorMobile(String username, String email, String mobile) throws ResourceNotFoundException;
 
 	public UserVo save(UserVo UserVo) throws UnableToProcessException, ResourceAlreadyExistsException;
 
